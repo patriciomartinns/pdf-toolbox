@@ -1,0 +1,66 @@
+[project]
+name = "mcp-pdf"
+version = "0.1.0"
+description = "Expose local PDFs to LLM agents via MCP: reading, chunking, semantic search."
+authors = [
+    { name = "Patrício Martins", email = "contato@patriciomartins.com.br" },
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastmcp>=2.13.1",
+    "numpy>=2.3.5",
+    "pydantic>=2.12.5",
+    "pymupdf>=1.26.6",
+    "sentence-transformers>=5.1.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_pdf_reader"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/mcp_pdf_reader", "README.md"]
+
+[project.scripts]
+mcp-pdf-reader = "mcp_pdf_reader.cli:start_mcp_server"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.407",
+    "pytest>=9.0.1",
+    "ruff>=0.14.6",
+]
+
+[tool.uv]
+package = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+filterwarnings = [
+    "ignore:.*Swig.*:DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.13"
+typeCheckingMode = "strict"
+reportMissingTypeStubs = false
+venvPath = "."
+venv = ".venv"
