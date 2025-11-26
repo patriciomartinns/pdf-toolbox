@@ -6,7 +6,7 @@ authors = [
     { name = "Patrício Martins", email = "contato@patriciomartins.com.br" },
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = [
     "fastmcp>=2.13.1",
     "numpy>=2.3.5",
@@ -48,7 +48,7 @@ filterwarnings = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py313"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
@@ -59,7 +59,7 @@ indent-style = "space"
 
 [tool.pyright]
 include = ["src", "tests"]
-pythonVersion = "3.13"
+pythonVersion = "3.14"
 typeCheckingMode = "strict"
 reportMissingTypeStubs = false
 venvPath = "."
