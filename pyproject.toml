@@ -1,12 +1,12 @@
 [project]
-name = "mcp-pdf"
+name = "mcp-pdf-reader"
 version = "0.1.0"
 description = "Expose local PDFs to LLM agents via MCP: reading, chunking, semantic search."
 authors = [
     { name = "Patrício Martins", email = "contato@patriciomartins.com.br" },
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 dependencies = [
     "fastmcp>=2.13.1",
     "numpy>=2.3.5",
@@ -59,7 +59,7 @@ indent-style = "space"
 
 [tool.pyright]
 include = ["src", "tests"]
-pythonVersion = "3.14"
+pythonVersion = "3.13"
 typeCheckingMode = "strict"
 reportMissingTypeStubs = false
 venvPath = "."

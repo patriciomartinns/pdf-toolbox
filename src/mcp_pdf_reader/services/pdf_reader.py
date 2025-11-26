@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import threading
+from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Sequence, cast
+from typing import Any, Sequence, cast
 
 import fitz  # type: ignore[import]
 import numpy as np
@@ -23,13 +24,13 @@ DEFAULT_CHUNK_OVERLAP = 75
 DEFAULT_MAX_PAGES = 25
 _DEFAULT_BASE_PATH = Path.cwd().resolve()
 _base_path: Path | None = _DEFAULT_BASE_PATH
+MAX_DOCUMENT_CACHE = 16
+MAX_INDEX_CACHE = 16
 
 _model_lock = threading.Lock()
 _embedding_model: Any | None = None
-
-if TYPE_CHECKING:  # pragma: no cover - typing helper only
-    from sentence_transformers import SentenceTransformer as _SentenceTransformer
-
+_cache_lock = threading.RLock()
+_embedding_epoch = 0
 
 def _load_sentence_transformer(model_name: str) -> Any:
     """Import SentenceTransformer lazily to avoid heavy startup cost when unused."""
@@ -66,8 +67,48 @@ class _PDFIndex:
     embeddings: np.ndarray
 
 
-_DOCUMENT_CACHE: dict[Path, _DocumentPages] = {}
-_INDEX_CACHE: dict[tuple[Path, int, int], _PDFIndex] = {}
+_DOCUMENT_CACHE: OrderedDict[Path, _DocumentPages] = OrderedDict()
+_INDEX_CACHE: OrderedDict[tuple[Path, int, int, int], _PDFIndex] = OrderedDict()
+
+
+def _clear_document_cache() -> None:
+    with _cache_lock:
+        _DOCUMENT_CACHE.clear()
+
+
+def _clear_index_cache(*, bump_epoch: bool = False) -> None:
+    global _embedding_epoch
+    with _cache_lock:
+        _INDEX_CACHE.clear()
+        if bump_epoch:
+            _embedding_epoch += 1
+
+
+def _remember_document(path: Path, entry: _DocumentPages) -> None:
+    with _cache_lock:
+        _DOCUMENT_CACHE[path] = entry
+        _DOCUMENT_CACHE.move_to_end(path)
+        if len(_DOCUMENT_CACHE) > MAX_DOCUMENT_CACHE:
+            _DOCUMENT_CACHE.popitem(last=False)
+
+
+def _remember_index(key: tuple[Path, int, int, int], entry: _PDFIndex) -> None:
+    with _cache_lock:
+        _INDEX_CACHE[key] = entry
+        _INDEX_CACHE.move_to_end(key)
+        if len(_INDEX_CACHE) > MAX_INDEX_CACHE:
+            _INDEX_CACHE.popitem(last=False)
+
+
+def _normalize_chunk_params(
+    chunk_size: int | None,
+    chunk_overlap: int | None,
+) -> tuple[int, int]:
+    size = chunk_size if chunk_size is not None else DEFAULT_CHUNK_SIZE
+    size = max(100, size)
+    overlap = chunk_overlap if chunk_overlap is not None else DEFAULT_CHUNK_OVERLAP
+    overlap = max(0, min(overlap, size // 2))
+    return size, overlap
 
 
 def set_base_path(path: str | Path | None) -> None:
@@ -76,6 +117,8 @@ def set_base_path(path: str | Path | None) -> None:
         _base_path = None
     else:
         _base_path = Path(path).resolve()
+    _clear_document_cache()
+    _clear_index_cache()
 
 
 def reset_base_path() -> None:
@@ -85,7 +128,10 @@ def reset_base_path() -> None:
 def set_embedding_model(model: Any | None) -> None:
     global _embedding_model
     with _model_lock:
+        if _embedding_model is model:
+            return
         _embedding_model = model
+    _clear_index_cache(bump_epoch=True)
 
 
 def get_embedding_model() -> Any:
@@ -153,12 +199,15 @@ def search_pdf(
     query: str,
     top_k: int = 5,
     min_score: float = 0.25,
+    chunk_size: int | None = None,
+    chunk_overlap: int | None = None,
 ) -> PDFSearchResponse:
     pdf_path = resolve_pdf_path(path)
     if not query.strip():
         raise ValueError("Query cannot be empty.")
 
-    index: _PDFIndex = _get_index(pdf_path, DEFAULT_CHUNK_SIZE, DEFAULT_CHUNK_OVERLAP)
+    chunk_len, overlap = _normalize_chunk_params(chunk_size, chunk_overlap)
+    index: _PDFIndex = _get_index(pdf_path, chunk_len, overlap)
     if not index.embedding_chunks or not index.embeddings.size:
         return PDFSearchResponse(path=str(pdf_path), query=query, results=[])
 
@@ -194,11 +243,12 @@ def describe_pdf_sections(
     path: str,
     max_chunks: int = 20,
     chunk_size: int | None = None,
+    chunk_overlap: int | None = None,
 ) -> PDFChunkResponse:
     pdf_path = resolve_pdf_path(path)
-    chunk_len = chunk_size or DEFAULT_CHUNK_SIZE
+    chunk_len, overlap = _normalize_chunk_params(chunk_size, chunk_overlap)
     doc = _get_document(pdf_path)
-    chunks = _build_chunks(doc.pages, chunk_len, DEFAULT_CHUNK_OVERLAP, pdf_path.name)
+    chunks = _build_chunks(doc.pages, chunk_len, overlap, pdf_path.name)
     selected = chunks[: max_chunks]
 
     chunk_infos = [
@@ -217,10 +267,12 @@ def describe_pdf_sections(
 
 
 def _get_document(path: Path) -> _DocumentPages:
-    cached = _DOCUMENT_CACHE.get(path)
     mtime = path.stat().st_mtime
-    if cached and cached.mtime == mtime:
-        return cached
+    with _cache_lock:
+        cached = _DOCUMENT_CACHE.get(path)
+        if cached and cached.mtime == mtime:
+            _DOCUMENT_CACHE.move_to_end(path)
+            return cached
 
     with cast(Any, fitz.open(path)) as doc:
         page_count = int(doc.page_count)
@@ -233,16 +285,19 @@ def _get_document(path: Path) -> _DocumentPages:
             page_count=page_count,
             pages=pages,
         )
-        _DOCUMENT_CACHE[path] = cached
+        _remember_document(path, cached)
         return cached
 
 
 def _get_index(path: Path, chunk_size: int, chunk_overlap: int) -> _PDFIndex:
-    key = (path, chunk_size, chunk_overlap)
-    cached = _INDEX_CACHE.get(key)
     mtime = path.stat().st_mtime
-    if cached and cached.mtime == mtime:
-        return cached
+    with _cache_lock:
+        epoch = _embedding_epoch
+        key = (path, chunk_size, chunk_overlap, epoch)
+        cached = _INDEX_CACHE.get(key)
+        if cached and cached.mtime == mtime:
+            _INDEX_CACHE.move_to_end(key)
+            return cached
 
     doc = _get_document(path)
     chunks = _build_chunks(doc.pages, chunk_size, chunk_overlap, path.name)
@@ -269,7 +324,7 @@ def _get_index(path: Path, chunk_size: int, chunk_overlap: int) -> _PDFIndex:
         embedding_chunks=embeddable,
         embeddings=embeddings,
     )
-    _INDEX_CACHE[key] = cached
+    _remember_index(key, cached)
     return cached
 
 

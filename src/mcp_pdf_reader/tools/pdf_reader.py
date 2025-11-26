@@ -28,6 +28,7 @@ def register_pdf_tools(mcp: FastMCP[Any]) -> None:
             end_page=end_page,
             max_pages=max_pages,
         )
+    _ = read_pdf
 
     @mcp.tool(
         description=(
@@ -39,6 +40,8 @@ def register_pdf_tools(mcp: FastMCP[Any]) -> None:
         query: str,
         top_k: int = 5,
         min_score: float = 0.25,
+        chunk_size: int | None = None,
+        chunk_overlap: int | None = None,
     ) -> PDFSearchResponse:
         """Rank PDF segments using cosine similarity."""
 
@@ -47,7 +50,10 @@ def register_pdf_tools(mcp: FastMCP[Any]) -> None:
             query=query,
             top_k=top_k,
             min_score=min_score,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
         )
+    _ = search_pdf
 
     @mcp.tool(
         description=(
@@ -58,6 +64,7 @@ def register_pdf_tools(mcp: FastMCP[Any]) -> None:
         path: str,
         max_chunks: int = 20,
         chunk_size: int | None = None,
+        chunk_overlap: int | None = None,
     ) -> PDFChunkResponse:
         """Expose deterministic chunks for structured ingestion."""
 
@@ -65,7 +72,9 @@ def register_pdf_tools(mcp: FastMCP[Any]) -> None:
             path=path,
             max_chunks=max_chunks,
             chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
         )
+    _ = describe_pdf_sections
 
 
 __all__ = ["register_pdf_tools"]

@@ -12,7 +12,7 @@ Expose local PDFs to LLM agents with deterministic chunking, semantic embeddings
 
 ### Requirements
 
-- Python ≥ **3.14** (enforced in `pyproject.toml`)
+- Python ≥ **3.13** (enforced em `pyproject.toml`)
 - [`uv`](https://github.com/astral-sh/uv) CLI to install and run via `uvx`
 - Access to the PDFs you want to expose (optionally confined to a base directory)
 
@@ -81,8 +81,8 @@ Any STDIO-aware MCP client can reuse the snippet verbatim.
 | Tool | Purpose | Key Parameters / Defaults |
 |------|---------|---------------------------|
 | `read_pdf` | Extract ordered text for a bounded page range (max 25 pages per call). | `path`, `start_page=1`, `end_page=None`, `max_pages=25` |
-| `search_pdf` | Run semantic similarity over cached embeddings and return ranked hits. | `path`, `query`, `top_k=5`, `min_score=0.25` |
-| `describe_pdf_sections` | Generate deterministic chunks with offsets for downstream ingestion. | `path`, `max_chunks=20`, `chunk_size=None` (defaults to 750 chars, 75 overlap) |
+| `search_pdf` | Run semantic similarity over cached embeddings and return ranked hits. | `path`, `query`, `top_k=5`, `min_score=0.25`, `chunk_size=None`, `chunk_overlap=None` |
+| `describe_pdf_sections` | Generate deterministic chunks with offsets for downstream ingestion. | `path`, `max_chunks=20`, `chunk_size=None`, `chunk_overlap=None` |
 
 All tools enforce `.pdf` extensions, resolve relative paths against the configured base directory, and will throw permission errors if a file escapes that sandbox.
 
@@ -114,6 +114,36 @@ All tools enforce `.pdf` extensions, resolve relative paths against the configur
   ```
 
   Responses list `chunk_id`, page number, character offsets, and the embedding model used (`all-MiniLM-L6-v2` by default).
+
+### Advanced Parameters (Cursor, VS Code, etc.)
+
+- Ao abrir o painel MCP do Cursor (⌘⇧C → *Servers* → `mcp-pdf`), edite o JSON de argumentos antes de executar a ferramenta.
+- Todos os parâmetros extras estão disponíveis mesmo sem suporte visual dedicado; basta incluir o campo no objeto enviado.
+- Exemplos úteis:
+
+  ```text
+  Tool: search_pdf
+  Args: {
+    "path": "learning/Cookbook.pdf",
+    "query": "show service",
+    "top_k": 8,
+    "min_score": 0.2,
+    "chunk_size": 400,
+    "chunk_overlap": 120
+  }
+  ```
+
+  ```text
+  Tool: describe_pdf_sections
+  Args: {
+    "path": "learning/Treinamento.pdf",
+    "max_chunks": 5,
+    "chunk_size": 600,
+    "chunk_overlap": 150
+  }
+  ```
+
+- Caso nenhum valor avançado seja informado, o servidor mantém os defaults seguros (750 caracteres por chunk e 75 de overlap).
 
 ### Development
 
