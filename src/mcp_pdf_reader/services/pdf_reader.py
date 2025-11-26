@@ -3,11 +3,10 @@ from __future__ import annotations
 import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Sequence, cast
+from typing import TYPE_CHECKING, Any, Sequence, cast
 
 import fitz  # type: ignore[import]
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 from ..schemas import (
     PDFChunkInfo,
@@ -27,6 +26,16 @@ _base_path: Path | None = _DEFAULT_BASE_PATH
 
 _model_lock = threading.Lock()
 _embedding_model: Any | None = None
+
+if TYPE_CHECKING:  # pragma: no cover - typing helper only
+    from sentence_transformers import SentenceTransformer as _SentenceTransformer
+
+
+def _load_sentence_transformer(model_name: str) -> Any:
+    """Import SentenceTransformer lazily to avoid heavy startup cost when unused."""
+    from sentence_transformers import SentenceTransformer
+
+    return SentenceTransformer(model_name)
 
 
 @dataclass(slots=True)
@@ -84,7 +93,7 @@ def get_embedding_model() -> Any:
     if _embedding_model is None:
         with _model_lock:
             if _embedding_model is None:
-                _embedding_model = SentenceTransformer(DEFAULT_MODEL_NAME)
+                _embedding_model = _load_sentence_transformer(DEFAULT_MODEL_NAME)
     return _embedding_model
 
 
