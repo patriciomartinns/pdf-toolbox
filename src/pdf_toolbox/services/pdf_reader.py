@@ -560,7 +560,7 @@ def _build_cell_boxes(table: Any, row_count: int, column_count: int) -> list[lis
     if isinstance(cells_attr, (list, tuple)):
         seq_cells: Sequence[Any | None] = cast(Sequence[Any | None], cells_attr)
         cell_list: list[Any | None] = list(seq_cells)
-    elif isinstance(cells_attr, Iterable):
+    elif isinstance(cells_attr, Iterable) and not isinstance(cells_attr, (str, bytes)):
         cell_list = list(cast(Iterable[Any | None], cells_attr))
     else:
         return rows
