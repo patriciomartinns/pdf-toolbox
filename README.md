@@ -200,6 +200,8 @@ Packaged via Hatchling (`pyproject.toml`) and exposes the CLI entry-point `mcp_p
 uv run pytest            # unit tests (see tests/test_pdf_tools.py)
 uv run ruff check .      # lint: E/F/I plus import sorting
 uv run pyright           # strict type checking (py314 target)
+uv run bandit -r src     # static security audit
+uv run check             # run the full pipeline above in sequence
 ```
 
 `uv run ruff format` keeps the style consistent (line length 100, double quotes).

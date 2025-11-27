@@ -16,13 +16,14 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mcp_pdf_reader"]
+packages = ["src/mcp_pdf_reader", "scripts"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/mcp_pdf_reader", "README.md"]
+include = ["src/mcp_pdf_reader", "scripts", "README.md"]
 
 [project.scripts]
 mcp-pdf-reader = "mcp_pdf_reader.cli:start_mcp_server"
+check = "scripts.check:run_checks"
 
 [build-system]
 requires = ["hatchling"]
@@ -30,6 +31,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "bandit>=1.9.2",
     "pyright>=1.1.407",
     "pytest>=9.0.1",
     "pytest-cov>=7.0.0",
@@ -60,7 +62,7 @@ indent-style = "space"
 
 [tool.pyright]
 include = ["src", "tests"]
-pythonVersion = "3.13"
+pythonVersion = "3.14"
 typeCheckingMode = "strict"
 reportMissingTypeStubs = false
 venvPath = "."

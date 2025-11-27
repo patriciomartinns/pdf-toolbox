@@ -1,4 +1,4 @@
-name: CI
+name: Tests & Quality
 
 on:
   push:
@@ -45,4 +45,7 @@ jobs:
 
       - name: Pyright
         run: uv run pyright
+
+      - name: Bandit
+        run: uv run bandit -r src
 
