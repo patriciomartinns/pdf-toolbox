@@ -2,7 +2,7 @@
 
 # PDF Toolbox
 
-![Python](https://img.shields.io/badge/python-3.13%2B-blue)
+![Python](https://img.shields.io/badge/python-3.14%2B-blue)
 ![License](https://img.shields.io/github/license/patriciomartinns/pdf-toolbox)
 ![Status](https://img.shields.io/badge/status-active-success)
 
@@ -21,6 +21,7 @@ Expose local PDFs to MCP-compatible agents or run the standalone `pdf-reader` CL
 
 ## Documentation
 
+- [Hosted docs (GitHub Pages)](https://patriciomartinns.github.io/pdf-toolbox/)
 - [Getting started](docs/getting-started.md)
 - [CLI reference](docs/cli-reference.md)
 - [MCP integration](docs/mcp-integration.md)
