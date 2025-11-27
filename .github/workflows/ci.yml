@@ -48,4 +48,3 @@ jobs:
 
       - name: Bandit
         run: uv run bandit -r src
-

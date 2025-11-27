@@ -42,4 +42,3 @@ What actually happened? Paste stack traces, CLI output, screenshots, or logs as 
 ## Additional Context
 
 Add any other context about the problem here.
-

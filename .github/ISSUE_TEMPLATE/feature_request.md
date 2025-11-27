@@ -22,4 +22,3 @@ What other options did you try (manual steps, different tools, etc.)? Why arenâ€
 ## Additional Context
 
 Links, screenshots, sample PDFs, or anything else that helps illustrate the request.
-

@@ -367,4 +367,3 @@ def test_get_index_uses_cache(tmp_path: Path) -> None:
     index_second = pdf_service._get_index(pdf_path, 120, 40)  # pyright: ignore[reportPrivateUsage]
     assert index_first is index_second
     pdf_tools.set_embedding_model(None)
-

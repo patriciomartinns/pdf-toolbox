@@ -243,4 +243,3 @@ def start_mcp_server(argv: Sequence[str] | None = None) -> None:
         )
 
     mcp.run()
-

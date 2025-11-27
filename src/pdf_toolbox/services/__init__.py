@@ -29,4 +29,3 @@ __all__ = [
     "set_base_path",
     "set_embedding_model",
 ]
-

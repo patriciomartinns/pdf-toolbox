@@ -69,4 +69,3 @@ pdf-reader configure-pdf-defaults --chunk-size 600 --chunk-overlap 100 --max-pag
 
 > [!NOTE]
 > Depending on the PDF backend shipped with your platform, you might see `DeprecationWarning: builtin type SwigPy* has no __module__ attribute` on macOS. The warning is harmless and the CLI suppresses it where possible so logs stay clean.
-

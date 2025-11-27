@@ -29,6 +29,7 @@ Before opening a PR:
 uv run pytest            # unit tests
 uv run ruff check .      # lint (E/F/I + import sorting)
 uv run pyright           # strict type checking (py314 target)
+uv run check             # for all checks and validations
 ```
 
 Optional but helpful:

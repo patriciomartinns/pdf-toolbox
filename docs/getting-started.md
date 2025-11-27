@@ -41,4 +41,3 @@ uvx --from git+https://github.com/patriciomartinns/pdf-toolbox -- pdf-toolbox --
 PyMuPDF currently emits `DeprecationWarning: builtin type SwigPy* has no __module__ attribute` on Python 3.11+ because its macOS wheels are still built with SWIG 4.3.1. The underlying SWIG bug is fixed upstream (see [swig/swig#2881](https://github.com/swig/swig/issues/2881)), but PyMuPDF cannot yet consume SWIG 4.4.0 on macOS due to [swig/swig#3279](https://github.com/swig/swig/issues/3279) (see maintainer comments in [pymupdf/PyMuPDF#3931](https://github.com/pymupdf/PyMuPDF/issues/3931#issuecomment-3533106306)).  
 
 Until Artifex ships PyMuPDF builds linked against the fixed SWIG toolchain on every platform, we suppress the warning locally so logs stay clean; nothing functional is impacted.
-

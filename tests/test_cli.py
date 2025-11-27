@@ -139,4 +139,3 @@ def test_describe_pdf_sections_cli_passes_mode(monkeypatch: Any) -> None:
     assert result.exit_code == 0
     assert captured["mode"] == "tables"
     assert captured["max_chunks"] == 2
-

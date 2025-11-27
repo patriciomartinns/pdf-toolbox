@@ -62,4 +62,3 @@ uvx --from git+https://github.com/patriciomartinns/pdf-toolbox -- pdf-toolbox --
 
 > [!NOTE]
 > On certain macOS builds the underlying PDF backend can emit `DeprecationWarning: builtin type SwigPy* has no __module__ attribute`. The warning is benign, and the server suppresses it so clients receive clean logs.
-

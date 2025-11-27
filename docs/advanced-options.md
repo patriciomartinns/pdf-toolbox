@@ -46,4 +46,3 @@ pdf-reader describe-pdf-sections my-report.pdf --mode tables --max-chunks 5
   }
 }
 ```
-

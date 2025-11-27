@@ -18,4 +18,3 @@ register_pdf_tools(mcp)
 app = mcp
 
 __all__ = ["mcp", "app"]
-

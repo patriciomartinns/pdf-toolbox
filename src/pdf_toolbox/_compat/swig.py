@@ -12,4 +12,3 @@ warnings.filterwarnings(
     message=r".*Swig.* has no __module__ attribute",
     category=DeprecationWarning,
 )
-

@@ -15,4 +15,3 @@ def run_checks() -> None:
     for command in _CHECK_COMMANDS:
         print(f"→ {' '.join(command)}", flush=True)
         subprocess.run(command, check=True)  # nosec B603
-

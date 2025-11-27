@@ -101,4 +101,3 @@ def register_pdf_tools(mcp: FastMCP[Any]) -> None:
 
 
 __all__ = ["register_pdf_tools"]
-

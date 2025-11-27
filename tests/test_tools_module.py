@@ -75,4 +75,3 @@ def test_register_pdf_tools_propagates_errors(monkeypatch: Any) -> None:
 
     with pytest.raises(ValueError, match="kaboom"):
         dummy.tools["read_pdf"]["func"](path="doc.pdf")
-
