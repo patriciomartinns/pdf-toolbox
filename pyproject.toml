@@ -1,6 +1,6 @@
 [project]
 name = "mcp-pdf-reader"
-version = "0.2.0"
+version = "1.0.0"
 description = "Expose local PDFs to LLM agents via MCP: reading, chunking, semantic search."
 authors = [
     { name = "Patrício Martins", email = "contato@patriciomartins.com.br" },
