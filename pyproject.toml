@@ -1,6 +1,6 @@
 [project]
 name = "pdf-toolbox"
-version = "2.0.0"
+version = "2.1.0"
 description = "Expose local PDFs to LLM agents via MCP: reading, chunking, semantic search."
 authors = [
     { name = "Patrício Martins", email = "contato@patriciomartins.com.br" },

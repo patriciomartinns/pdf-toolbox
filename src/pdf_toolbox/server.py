@@ -6,7 +6,7 @@ from .tools.pdf_reader import register_pdf_tools
 
 mcp = FastMCP(
     "PDF Toolbox",
-    version="2.0.0",
+    version="2.1.0",
     instructions=(
         "Local PDF ingestion helpers for LLM agents. Provide the PDF path (relative to the allowed "
         "base directory when set) and tune pagination or semantic search parameters as needed."
