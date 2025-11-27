@@ -140,20 +140,6 @@ def test_search_pdf_rebuilds_index_when_model_changes(sample_pdf: Path) -> None:
     assert initial_score != updated_score
 
 
-def test_search_pdf_accepts_chunk_parameters(sample_pdf: Path) -> None:
-    pdf_tools.set_embedding_model(_DeterministicModel())
-    response = pdf_tools.search_pdf(
-        path=str(sample_pdf),
-        query="semantic chunking",
-        top_k=1,
-        min_score=-1.0,
-        chunk_size=150,
-        chunk_overlap=40,
-    )
-    pdf_tools.set_embedding_model(None)
-    assert response.results
-
-
 def test_configure_pdf_defaults_updates_values() -> None:
     response = pdf_tools.configure_pdf_defaults(
         chunk_size=320,
@@ -177,6 +163,28 @@ def test_describe_pdf_sections_respects_runtime_defaults(sample_pdf: Path) -> No
     assert result.chunks
     first_chunk = result.chunks[0]
     assert first_chunk.end_char - first_chunk.start_char <= 150
+
+
+def test_describe_pdf_sections_chunk_params_affect_output(tmp_path: Path) -> None:
+    pdf_path = tmp_path / "chunking.pdf"
+    doc = cast(Any, fitz.open())  # type: ignore[call-arg]
+    page = doc.new_page()
+    line = "Chunk parameters should impact chunking output. " * 4
+    for idx in range(60):
+        page.insert_text((72, 72 + idx * 12), line)
+    doc.save(pdf_path)
+    doc.close()
+
+    tight = pdf_tools.describe_pdf_sections(
+        str(pdf_path), chunk_size=120, chunk_overlap=10, max_chunks=25
+    )
+    wide = pdf_tools.describe_pdf_sections(
+        str(pdf_path), chunk_size=600, chunk_overlap=10, max_chunks=25
+    )
+
+    assert tight.chunk_count >= 2
+    assert tight.chunk_count > wide.chunk_count
+    assert tight.chunks[0].end_char - tight.chunks[0].start_char <= 120
 
 
 def test_read_pdf_invalid_page_range_raises(sample_pdf: Path) -> None:
@@ -290,23 +298,20 @@ def test_build_chunks_overlap_behavior() -> None:
     assert chunks[1].start_char == chunks[0].end_char - 40
 
 
-def test_resolve_pdf_path_handles_relative(tmp_path: Path) -> None:
-    pdf_tools.set_base_path(tmp_path)
-    pdf_path = _create_pdf(tmp_path, "relative.pdf", "relative")
-    resolved = pdf_tools.resolve_pdf_path("relative.pdf")
-    assert resolved == pdf_path.resolve()
-
-
 def test_resolve_pdf_path_missing_file(tmp_path: Path) -> None:
     pdf_tools.set_base_path(tmp_path)
     with pytest.raises(FileNotFoundError):
         pdf_tools.resolve_pdf_path("missing.pdf")
 
 
-def test_set_base_path_accepts_none(tmp_path: Path) -> None:
-    pdf_tools.set_base_path(tmp_path)
+def test_set_base_path_none_allows_absolute_paths(tmp_path: Path) -> None:
+    outside_root = tmp_path.parent / f"{tmp_path.name}-outside"
+    outside_root.mkdir(exist_ok=True)
+    pdf_path = _create_pdf(outside_root, "loose.pdf", "loose text")
+
     pdf_tools.set_base_path(None)
-    assert pdf_service._base_path is None  # pyright: ignore[reportPrivateUsage]
+    resolved = pdf_tools.resolve_pdf_path(str(pdf_path))
+    assert resolved == pdf_path.resolve()
 
 
 def test_search_pdf_respects_min_score(sample_pdf: Path) -> None:

@@ -11,12 +11,14 @@ from mcp_pdf_reader import cli
 def test_start_mcp_server_runs_with_quiet(monkeypatch: Any) -> None:
     called: dict[str, Any] = {}
 
-    def fake_run() -> None:
-        called["run"] = True
+    def fake_run(*args: Any, **kwargs: Any) -> None:
+        called["args"] = args
+        called["kwargs"] = kwargs
 
     monkeypatch.setattr(cli.mcp, "run", fake_run)
     cli.start_mcp_server(["--quiet"])
-    assert called["run"] is True
+    assert called["args"] == ()
+    assert called["kwargs"] == {}
 
 
 def test_start_mcp_server_prints_banner(monkeypatch: Any, capsys: Any) -> None:
@@ -24,6 +26,13 @@ def test_start_mcp_server_prints_banner(monkeypatch: Any, capsys: Any) -> None:
     cli.start_mcp_server([])
     captured = capsys.readouterr()
     assert "Starting MCP PDF Reader" in captured.out
+
+
+def test_start_mcp_server_quiet_suppresses_banner(monkeypatch: Any, capsys: Any) -> None:
+    monkeypatch.setattr(cli.mcp, "run", lambda: None)
+    cli.start_mcp_server(["--quiet"])
+    captured = capsys.readouterr()
+    assert captured.out == ""
 
 
 def test_start_mcp_server_rejects_non_stdio(monkeypatch: Any) -> None:

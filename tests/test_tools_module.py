@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict, cast
 
+import pytest
+
 from mcp_pdf_reader.services import pdf_reader as service_module
 from mcp_pdf_reader.tools import pdf_reader as tools_module
 
@@ -60,4 +62,17 @@ def test_register_pdf_tools_wires_service_functions(monkeypatch: Any) -> None:
         dummy.tools["configure_pdf_defaults"]["func"](chunk_size=123)["config"]["chunk_size"]
         == 123
     )
+
+
+def test_register_pdf_tools_propagates_errors(monkeypatch: Any) -> None:
+    dummy = _DummyMCP()
+
+    def boom(**kwargs: Any) -> Dict[str, Any]:
+        raise ValueError("kaboom")
+
+    monkeypatch.setattr(service_module, "read_pdf", boom)
+    tools_module.register_pdf_tools(cast(Any, dummy))
+
+    with pytest.raises(ValueError, match="kaboom"):
+        dummy.tools["read_pdf"]["func"](path="doc.pdf")
 
