@@ -6,8 +6,8 @@ from typing import Any, Sequence
 import pytest
 from typer.testing import CliRunner
 
-from mcp_pdf_reader import cli
-from mcp_pdf_reader.schemas import PDFPage, PDFReadResponse
+from pdf_toolbox import cli
+from pdf_toolbox.schemas import PDFPage, PDFReadResponse
 
 runner = CliRunner()
 
@@ -38,7 +38,7 @@ def test_start_mcp_server_prints_banner(monkeypatch: Any, capsys: Any) -> None:
     monkeypatch.setattr(cli.mcp, "run", lambda: None)
     cli.start_mcp_server([])
     captured = capsys.readouterr()
-    assert "Starting MCP PDF Reader" in captured.out
+    assert "Starting PDF Toolbox" in captured.out
 
 
 def test_start_mcp_server_quiet_suppresses_banner(monkeypatch: Any, capsys: Any) -> None:

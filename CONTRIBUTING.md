@@ -1,4 +1,4 @@
-# Contributing to MCP PDF Reader
+# Contributing to PDF Toolbox
 
 Thanks for taking the time to contribute! This project exposes local PDFs to MCP-compatible agents. Follow the guidelines below to keep the workflow smooth and reproducible.
 
@@ -6,8 +6,8 @@ Thanks for taking the time to contribute! This project exposes local PDFs to MCP
 
 1. **Fork & Clone**
    ```bash
-   git clone https://github.com/<your-user>/mcp-pdf-reader.git
-   cd mcp-pdf-reader
+   git clone https://github.com/<your-user>/pdf-toolbox.git
+   cd pdf-toolbox
    ```
 2. **Install uv** (if you haven’t already): <https://github.com/astral-sh/uv>
 3. **Sync dependencies**
@@ -40,7 +40,7 @@ uv run ruff format       # enforce repository formatting
 ## Project Structure
 
 ```
-src/mcp_pdf_reader/      # main package
+src/pdf_toolbox/         # main package
 tests/                   # pytest suite
 learning/                # sample PDFs (ignored by VCS)
 README.md                # usage guide
@@ -66,5 +66,5 @@ README.md                # usage guide
 
 ## Questions?
 
-Open a discussion or issue on [GitHub](https://github.com/patriciomartinns/mcp-pdf-reader). Thanks again for contributing! 🎉
+Open a discussion or issue on [GitHub](https://github.com/patriciomartinns/pdf-toolbox). Thanks again for contributing! 🎉
 

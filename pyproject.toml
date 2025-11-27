@@ -1,6 +1,6 @@
 [project]
-name = "mcp-pdf-reader"
-version = "1.1.0"
+name = "pdf-toolbox"
+version = "2.0.0"
 description = "Expose local PDFs to LLM agents via MCP: reading, chunking, semantic search."
 authors = [
     { name = "Patrício Martins", email = "contato@patriciomartins.com.br" },
@@ -19,14 +19,14 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mcp_pdf_reader", "scripts"]
+packages = ["src/pdf_toolbox", "scripts"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/mcp_pdf_reader", "scripts", "README.md"]
+include = ["src/pdf_toolbox", "scripts", "README.md"]
 
 [project.scripts]
-mcp-pdf-reader = "mcp_pdf_reader.cli:start_mcp_server"
-pdf-reader = "mcp_pdf_reader.cli:run_tool_cli"
+pdf-toolbox = "pdf_toolbox.cli:start_mcp_server"
+pdf-reader = "pdf_toolbox.cli:run_tool_cli"
 check = "scripts.check:run_checks"
 
 [build-system]

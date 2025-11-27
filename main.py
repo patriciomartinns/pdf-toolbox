@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from mcp_pdf_reader.cli import start_mcp_server
-from mcp_pdf_reader.server import app, mcp
+from pdf_toolbox.cli import start_mcp_server
+from pdf_toolbox.server import app, mcp
 
 
 def main() -> None:

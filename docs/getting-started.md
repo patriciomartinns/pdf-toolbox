@@ -1,6 +1,6 @@
-# MCP PDF Reader
+# PDF Toolbox
 
-Official usage guide for MCP PDF Reader. Inside you will find how to:
+Official usage guide for PDF Toolbox. Inside you will find how to:
 
 - Install both the MCP server and the `pdf-reader` CLI using `uv`.
 - Run the tools locally from the terminal (see [CLI Reference](cli-reference.md)).
@@ -17,23 +17,23 @@ Official usage guide for MCP PDF Reader. Inside you will find how to:
 
 ```bash
 # Install the CLI locally
-uv tool install --from git+https://github.com/patriciomartinns/mcp-pdf-reader pdf-reader
+uv tool install --from git+https://github.com/patriciomartinns/pdf-toolbox pdf-reader
 
 # Run ad-hoc without installing
-uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- pdf-reader --help
+uvx --from git+https://github.com/patriciomartinns/pdf-toolbox -- pdf-reader --help
 ```
 
 Start the MCP server (STDIO transport):
 
 ```bash
-uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- mcp-pdf-reader --quiet
+uvx --from git+https://github.com/patriciomartinns/pdf-toolbox -- pdf-toolbox --quiet
 ```
 
 ## Next Steps
 
 - [CLI Reference](cli-reference.md) – commands, parameters, and examples.
 - [MCP Integration](mcp-integration.md) – snippets for popular clients.
-- [GitHub Repository](https://github.com/patriciomartinns/mcp-pdf-reader) – issues, releases, roadmap.
+- [GitHub Repository](https://github.com/patriciomartinns/pdf-toolbox) – issues, releases, roadmap.
 
 ## Known Warnings (PyMuPDF / SWIG)
 

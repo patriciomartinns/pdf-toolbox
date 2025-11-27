@@ -4,8 +4,8 @@ from typing import Any, Callable, Dict, cast
 
 import pytest
 
-from mcp_pdf_reader.services import pdf_reader as service_module
-from mcp_pdf_reader.tools import pdf_reader as tools_module
+from pdf_toolbox.services import pdf_reader as service_module
+from pdf_toolbox.tools import pdf_reader as tools_module
 
 
 class _DummyMCP:

@@ -21,8 +21,8 @@ tool_app = typer.Typer(
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="mcp-pdf-reader",
-        description="Run the MCP PDF Reader server over STDIO.",
+        prog="pdf-toolbox",
+        description="Run the PDF Toolbox MCP server over STDIO.",
     )
     parser.add_argument(
         "--transport",
@@ -230,8 +230,8 @@ def start_mcp_server(argv: Sequence[str] | None = None) -> None:
 
     if not args.quiet:
         print(
-            "Starting MCP PDF Reader (transport=stdio). "
-            "Tip: `uvx --from <repo> mcp-pdf-reader` for remote execution.",
+            "Starting PDF Toolbox (transport=stdio). "
+            "Tip: `uvx --from <repo> pdf-toolbox` for remote execution.",
             flush=True,
         )
 

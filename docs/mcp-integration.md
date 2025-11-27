@@ -1,11 +1,11 @@
-# MCP server `mcp-pdf-reader`
+# MCP server `pdf-toolbox`
 
 The server exposes the same tools over STDIO transport—ideal for Cursor, VS Code, Claude, and any MCP-compatible agent.
 
 ## Running the server
 
 ```bash
-uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- mcp-pdf-reader --quiet
+uvx --from git+https://github.com/patriciomartinns/pdf-toolbox -- pdf-toolbox --quiet
 ```
 
 > Remove `--quiet` if you want to see the startup banner. Only STDIO transport is supported.
@@ -21,9 +21,9 @@ uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- mcp-pdf-rea
       "command": "uvx",
       "args": [
         "--from",
-        "git+https://github.com/patriciomartinns/mcp-pdf-reader",
+        "git+https://github.com/patriciomartinns/pdf-toolbox",
         "--",
-        "mcp-pdf-reader",
+        "pdf-toolbox",
         "--quiet"
       ]
     }
@@ -34,10 +34,10 @@ uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- mcp-pdf-rea
 ### Claude Desktop / Claude Code
 
 1. Open **Settings → MCP Integrations**.  
-2. Add a server with: `uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- mcp-pdf-reader`.  
+2. Add a server with: `uvx --from git+https://github.com/patriciomartinns/pdf-toolbox -- pdf-toolbox`.  
 3. Append `--quiet` if you prefer silent startups.
 
-### CLI agents (Serena, Cline, OpenHands)
+### CLI agents (Cline, OpenCode)
 
 ```json
 {
@@ -45,9 +45,9 @@ uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- mcp-pdf-rea
   "command": "uvx",
   "args": [
     "--from",
-    "git+https://github.com/patriciomartinns/mcp-pdf-reader",
+    "git+https://github.com/patriciomartinns/pdf-toolbox",
     "--",
-    "mcp-pdf-reader"
+    "pdf-toolbox"
   ]
 }
 ```

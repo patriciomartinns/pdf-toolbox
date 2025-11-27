@@ -752,51 +752,6 @@ wheels = [
 ]
 
 [[package]]
-name = "mcp-pdf-reader"
-version = "1.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "click" },
-    { name = "fastmcp" },
-    { name = "numpy" },
-    { name = "pydantic" },
-    { name = "pymupdf" },
-    { name = "rich" },
-    { name = "sentence-transformers" },
-    { name = "typer" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "bandit" },
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "click", specifier = ">=8.3.1" },
-    { name = "fastmcp", specifier = ">=2.13.1" },
-    { name = "numpy", specifier = ">=2.3.5" },
-    { name = "pydantic", specifier = ">=2.12.5" },
-    { name = "pymupdf", specifier = ">=1.26.6" },
-    { name = "rich", specifier = ">=14.2.0" },
-    { name = "sentence-transformers", specifier = ">=5.1.2" },
-    { name = "typer", specifier = ">=0.20.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "bandit", specifier = ">=1.9.2" },
-    { name = "pyright", specifier = ">=1.1.407" },
-    { name = "pytest", specifier = ">=9.0.1" },
-    { name = "pytest-cov", specifier = ">=7.0.0" },
-    { name = "ruff", specifier = ">=0.14.6" },
-]
-
-[[package]]
 name = "mdurl"
 version = "0.1.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1064,6 +1019,51 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/fa/2a/52a8da6fe965dea6192eb716b357558e103aea0a1e9a8352ad575a8406ca/pathvalidate-3.3.1.tar.gz", hash = "sha256:b18c07212bfead624345bb8e1d6141cdcf15a39736994ea0b94035ad2b1ba177", size = 63262, upload-time = "2025-06-15T09:07:20.736Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9a/70/875f4a23bfc4731703a5835487d0d2fb999031bd415e7d17c0ae615c18b7/pathvalidate-3.3.1-py3-none-any.whl", hash = "sha256:5263baab691f8e1af96092fa5137ee17df5bdfbd6cff1fcac4d6ef4bc2e1735f", size = 24305, upload-time = "2025-06-15T09:07:19.117Z" },
+]
+
+[[package]]
+name = "pdf-toolbox"
+version = "2.0.0"
+source = { editable = "." }
+dependencies = [
+    { name = "click" },
+    { name = "fastmcp" },
+    { name = "numpy" },
+    { name = "pydantic" },
+    { name = "pymupdf" },
+    { name = "rich" },
+    { name = "sentence-transformers" },
+    { name = "typer" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "bandit" },
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "click", specifier = ">=8.3.1" },
+    { name = "fastmcp", specifier = ">=2.13.1" },
+    { name = "numpy", specifier = ">=2.3.5" },
+    { name = "pydantic", specifier = ">=2.12.5" },
+    { name = "pymupdf", specifier = ">=1.26.6" },
+    { name = "rich", specifier = ">=14.2.0" },
+    { name = "sentence-transformers", specifier = ">=5.1.2" },
+    { name = "typer", specifier = ">=0.20.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "bandit", specifier = ">=1.9.2" },
+    { name = "pyright", specifier = ">=1.1.407" },
+    { name = "pytest", specifier = ">=9.0.1" },
+    { name = "pytest-cov", specifier = ">=7.0.0" },
+    { name = "ruff", specifier = ">=0.14.6" },
 ]
 
 [[package]]

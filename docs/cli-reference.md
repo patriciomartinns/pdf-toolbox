@@ -5,13 +5,16 @@ The CLI exposes each MCP tool as a Typer subcommand and prints JSON-formatted ou
 ## Installation
 
 ```bash
-uv tool install --from git+https://github.com/patriciomartinns/mcp-pdf-reader pdf-reader
+uv tool install --from git+https://github.com/patriciomartinns/pdf-toolbox pdf-reader
 ```
+
+> [!NOTE]
+> If you still have the old `mcp-pdf-reader` CLI installed (`uv tool install mcp-pdf-reader`), remove it first with `uv tool uninstall mcp-pdf-reader` to prevent binary name conflicts.
 
 Run without installing:
 
 ```bash
-uvx --from git+https://github.com/patriciomartinns/mcp-pdf-reader -- pdf-reader --help
+uvx --from git+https://github.com/patriciomartinns/pdf-toolbox -- pdf-reader --help
 ```
 
 ## Available Commands

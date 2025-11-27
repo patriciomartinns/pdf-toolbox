@@ -10,8 +10,8 @@ import numpy as np
 import numpy.typing as npt
 import pytest
 
-from mcp_pdf_reader import pdf_tools
-from mcp_pdf_reader.services import pdf_reader as pdf_service
+from pdf_toolbox import pdf_tools
+from pdf_toolbox.services import pdf_reader as pdf_service
 
 VectorArray = npt.NDArray[np.float32]
 
