@@ -1,6 +1,6 @@
 [project]
 name = "mcp-pdf-reader"
-version = "1.0.0"
+version = "1.1.0"
 description = "Expose local PDFs to LLM agents via MCP: reading, chunking, semantic search."
 authors = [
     { name = "Patrício Martins", email = "contato@patriciomartins.com.br" },
@@ -8,11 +8,14 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "click>=8.3.1",
     "fastmcp>=2.13.1",
     "numpy>=2.3.5",
     "pydantic>=2.12.5",
     "pymupdf>=1.26.6",
+    "rich>=14.2.0",
     "sentence-transformers>=5.1.2",
+    "typer>=0.20.0",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -23,6 +26,7 @@ include = ["src/mcp_pdf_reader", "scripts", "README.md"]
 
 [project.scripts]
 mcp-pdf-reader = "mcp_pdf_reader.cli:start_mcp_server"
+pdf-reader = "mcp_pdf_reader.cli:run_tool_cli"
 check = "scripts.check:run_checks"
 
 [build-system]

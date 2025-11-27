@@ -1,12 +1,23 @@
 from __future__ import annotations
 
 import threading
+import warnings
 from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Sequence, cast
 
-import fitz  # type: ignore[import]
+with warnings.catch_warnings():
+    # Same upstream SWIG warning as documented in
+    # https://github.com/pymupdf/PyMuPDF/issues/3931 — silence it just for the
+    # PyMuPDF import so normal user warnings still surface elsewhere.
+    warnings.filterwarnings(
+        "ignore",
+        message=r".*Swig.* has no __module__ attribute",
+        category=DeprecationWarning,
+    )
+    import fitz  # type: ignore[import]
+
 import numpy as np
 
 from ..schemas import (
